@@ -25,7 +25,7 @@ public class Juego {
 	private static boolean lanzado2 = false; //Estado del cohete 2
 
 
-	public static void main(String[] args) {
+	public void cargarJuego() {
 
 		// Sacamos las dimensiones de la pantalla
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -43,8 +43,8 @@ public class Juego {
 		// Movimiento de los usuarios
 		while (true) {
 			
-			movimientoCohete1(lanzado1);
-			movimientoCohete2(lanzado2);
+			movimientoCohete1();
+			movimientoCohete2();
 		
 			limitesVuelo(ancho, alto);
 		
@@ -269,8 +269,12 @@ public class Juego {
 			lanzado2 = true;
 		}
 	}
-
-	public static void movimientoCohete1(boolean lanzado1) {
+	
+	/*
+	 * Método encargado de realizar el movimiento
+	 * del cohete 1
+	 */
+	public static void movimientoCohete1() {
 
 		if (lanzado1 == true) {
 
@@ -288,8 +292,12 @@ public class Juego {
 			}
 		}
 	}
-
-	public static void movimientoCohete2(boolean lanzado2) {
+	
+	/*
+	 * Método encargado de realizar el movimiento
+	 * del cohete 2
+	 */
+	public static void movimientoCohete2() {
 
 		if (lanzado2 == true) {
 
@@ -308,6 +316,9 @@ public class Juego {
 		}
 	}
 	
+	/*
+	 * Método que marca los límites de vuelo del cohete
+	 */
 	public static void limitesVuelo(int ancho, int alto) {
 
 		if (rocket1X > ancho || rocket1X < 0 || rocket1Y > alto || rocket1Y < 0) {
@@ -325,10 +336,17 @@ public class Juego {
 		}
 
 	}
+	/*
+	 * Método que recupera la última posición
+	 * del cohete 1
+	 */
 	public static char getLastPosition1() {
 		return lastPosition1;
 	}
-
+	/*
+	 * Método que recupera la última posición
+	 * del cohete 2
+	 */
 	public static char getLastPosition2() {
 		return lastPosition2;
 	}
