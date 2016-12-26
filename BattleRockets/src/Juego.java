@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -31,6 +32,7 @@ public class Juego {
 	private boolean lanzado1 = false; //Estado del cohete 1
 	private boolean lanzado2 = false; //Estado del cohete 2
 	private int movimiento;
+	ArrayList<String> colisiones = null;
 
 	/**
 	 * Método que carga el juego
@@ -54,7 +56,7 @@ public class Juego {
 		//Cargamos los jugadores
 		player1 = new Jugador("images/player1/user1-right.png", 200, 300, 0);
 		player2 = new Jugador("images/player2/user2-right.png", 200, 200, 0);
-		
+		colisiones = new ArrayList<String>();
 		// Movimiento de los usuarios
 		while (true) {
 			
@@ -72,7 +74,7 @@ public class Juego {
 				disparoJ1();
 			}
 			if ((StdDraw.isKeyPressed(96) || movimiento == 5) && lanzado2 == false ) { // Numpad 0
-																// Jugador 2 dispara
+																					  // Jugador 2 dispara
 				disparoJ2();
 			}
 			if (StdDraw.isKeyPressed(68)) { // Letra D
@@ -198,9 +200,16 @@ public class Juego {
 						    JOptionPane.INFORMATION_MESSAGE,
 						    new ImageIcon("src/images/icon.jpg"));
 				}
+				//Mostramos las colisiones registradas
+				for (int i = 0; i < colisiones.size(); i++) {
+					StdDraw.text(ancho/2, (alto - 60 - 20*i), colisiones.get(i)); 
+				}
+				StdDraw.show();
+				System.out.println(colisiones.size());
 				break;
 			}
 		}
+		
 	}
 
 	/*
@@ -225,16 +234,15 @@ public class Juego {
 			lanzado2 = false;
 			score2 += 1;
 			player2.setScore(score2);
-			reset();
-		}
-		else if (player1X  == rocket2X + 20 && (rocket2Y <= player1Y + 12 && rocket2Y >= player1Y - 12)){
+			reset(player1X, player1Y);
+		}else if (player1X  == rocket2X + 20 && (rocket2Y <= player1Y + 12 && rocket2Y >= player1Y - 12)){
 			user1Image = "images/explosion.png";
 			StdDraw.picture(player1X, player1Y, user1Image);
 			StdDraw.show();
 			lanzado2 = false;
 			score2 += 1;
 			player2.setScore(score2);
-			reset();
+			reset(player1X, player1Y);
 		}else if (player1Y == rocket2Y + 20 && (rocket2X <= player1X + 12 && rocket2X >= player1X - 12)){
 			user1Image = "images/explosion.png";
 			StdDraw.picture(player1X, player1Y, user1Image);
@@ -242,7 +250,7 @@ public class Juego {
 			lanzado2 = false;
 			score2 += 1;
 			player2.setScore(score2);
-			reset();
+			reset(player1X, player1Y);
 		}else if (player1Y == rocket2Y - 20 && (rocket2X <= player1X + 12 && rocket2X >= player1X - 12)){
 			user1Image = "images/explosion.png";
 			StdDraw.picture(player1X, player1Y, user1Image);
@@ -250,7 +258,7 @@ public class Juego {
 			lanzado2 = false;
 			score2 += 1;
 			player2.setScore(score2);
-			reset();
+			reset(player1X, player1Y);
 		}
 		
 	}
@@ -268,16 +276,15 @@ public class Juego {
 			lanzado1 = false;
 			score1 += 1;
 			player1.setScore(score1);
-			reset();
-		}
-		else if (player2X  == rocket1X + 20 && (rocket1Y <= player2Y + 12 && rocket1Y >= player2Y - 12)){
+			reset(player2X, player2Y);
+		}else if (player2X  == rocket1X + 20 && (rocket1Y <= player2Y + 12 && rocket1Y >= player2Y - 12)){
 			user2Image = "images/explosion.png";
 			StdDraw.picture(player2X, player2Y, user2Image);
 			StdDraw.show();
 			lanzado1 = false;
 			score1 += 1;
 			player1.setScore(score1);
-			reset();
+			reset(player2X, player2Y);
 		}else if (player2Y == rocket1Y + 20 && (rocket1X <= player2X + 12 && rocket1X >= player2X - 12)){
 			user2Image = "images/explosion.png";
 			StdDraw.picture(player2X, player2Y, user2Image);
@@ -285,7 +292,7 @@ public class Juego {
 			lanzado1 = false;
 			score1 += 1;
 			player1.setScore(score1);
-			reset();
+			reset(player2X, player2Y);
 		}else if (player1Y == rocket1Y - 20 && (rocket1X <= player2X + 12 && rocket1X >= player2X - 12)){
 			user2Image = "images/explosion.png";
 			StdDraw.picture(player2X, player2Y, user2Image);
@@ -293,20 +300,24 @@ public class Juego {
 			lanzado1 = false;
 			score1 += 1;
 			player1.setScore(score1);
-			reset();
+			reset(player2X, player2Y);
 		}
 		
 	}
 	
 	/*
-	 * Método que coloca a los jugadores en la posición inicial
+	 * Método que coloca a los jugadores en la posición inicial 
+	 * y registra las colisiones
 	 */
-	public void reset(){
+	public void reset(int x, int y){
 	
+		colisiones.add("Colisión número " + colisiones.size() + " en coordenadas [" + x + ", " + y + "]");
+		
 		try {
 			Thread.sleep (2000);
 			} catch (Exception e) {
 			}
+		
 		player1X = 200;	player1Y = 300;
 		player2X = 200; player2Y = 200; 
 		rocket1X = 0; rocket1Y = 0;

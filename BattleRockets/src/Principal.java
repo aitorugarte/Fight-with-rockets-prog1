@@ -1,12 +1,13 @@
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+/**
+ * @author aitor
+ *  Clase principal del programa
+ */
 public class Principal {
 
-	/**
-	 * @author aitor
-	 *  Clase principal del programa
-	 */
+
 	public static void main(String[] args) {
 	
 		int seleccion = JOptionPane.showOptionDialog( null, "Elija un modo de juego",  "Battle Rockets",
