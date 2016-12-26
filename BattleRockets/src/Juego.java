@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -27,9 +28,14 @@ public class Juego {
 	private int cont2 = 0; // Con este valor el cohete 2 se dispara
 	private boolean lanzado1 = false; //Estado del cohete 1
 	private boolean lanzado2 = false; //Estado del cohete 2
+	private int movimiento;
 
-
-	public void cargarJuego() {
+	
+	/**
+	 * Método que carga el juego
+	 * @param tipo 1 si jugador vs jugador, 2 si jugador vs IA
+	 */
+	public void cargarJuego(int tipo) {
 
 		// Sacamos las dimensiones de la pantalla
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,25 +61,18 @@ public class Juego {
 			movimientoCohete2();
 		
 			limitesVuelo(ancho, alto);
-		
+			if(tipo == 2){
+				movimiento = movimientoIA();
+			}
+			
 			// Eventos de teclado
 			if (StdDraw.isKeyPressed(32) && lanzado1 == false) { // Barra espaciadora
 																// Jugador 1 dispara
 				disparoJ1();
 			}
-			if (StdDraw.isKeyPressed(96) && lanzado2 == false) { // Numpad 0
+			if ((StdDraw.isKeyPressed(96) || movimiento == 5) && lanzado2 == false ) { // Numpad 0
 																// Jugador 2 dispara
 				disparoJ2();
-			}
-			//Reseteo del cohete 1
-			if (StdDraw.isKeyPressed(16)){ // Shift
-				rocketImage1 = "images/vacio.png";
-				cont1 = 0;
-			}
-			//Reseteo del cohete 2
-			if (StdDraw.isKeyPressed(107)) { // Símbolo suma (+)
-				rocketImage2 = "images/vacio.png";
-				cont2 = 0;
 			}
 			if (StdDraw.isKeyPressed(68)) { // Letra D
 				
@@ -119,7 +118,7 @@ public class Juego {
 					player1Y -= 10;
 				}
 			}
-			if (StdDraw.isKeyPressed(39)) { // Flecha Derecha
+			if (StdDraw.isKeyPressed(39) || movimiento == 1) { // Flecha Derecha
 				
 				player2.moveRight(2, player2X, player2Y);
 				
@@ -130,7 +129,7 @@ public class Juego {
 					player2X += 10;
 				}
 			}
-			if (StdDraw.isKeyPressed(37)) { // Flecha Izquierda
+			if (StdDraw.isKeyPressed(37) || movimiento == 2) { // Flecha Izquierda
 
 				player2.moveLeft(2, player2X, player2Y);
 
@@ -141,7 +140,7 @@ public class Juego {
 					player2X -= 10;
 				}
 			}
-			if (StdDraw.isKeyPressed(38)) { // Flecha Arriba
+			if (StdDraw.isKeyPressed(38) || movimiento == 3) { // Flecha Arriba
 
 				player2.moveUp(2, player2X, player2Y);
 				
@@ -152,7 +151,7 @@ public class Juego {
 					player2Y += 10;
 				}
 			}
-			if (StdDraw.isKeyPressed(40)) { // Flecha Abajo
+			if (StdDraw.isKeyPressed(40) || movimiento == 4) { // Flecha Abajo
 
 				player2.moveDown(2, player2X, player2Y);
 
@@ -183,17 +182,17 @@ public class Juego {
 			// Revisar si el tiempo se acaba
 			if (time < 0) {
 				if(score1 > score2){
-					JOptionPane.showMessageDialog(null, nombre1 + " won so ez. " + score1 + ": " + score2,
+					JOptionPane.showMessageDialog(null, nombre1 + " won so ez.  " + score1 + " : " + score2,
 							 "Time is up!",
 						    JOptionPane.INFORMATION_MESSAGE,
 						    new ImageIcon("src/images/icon.jpg"));
 				}else if(score1 < score2){
-					JOptionPane.showMessageDialog(null, nombre2 + " won so ez. " + score1 + ": " + score2,
+					JOptionPane.showMessageDialog(null, nombre2 + " won so ez.  " + score1 + " : " + score2,
 							 "Time is up!",
 						    JOptionPane.INFORMATION_MESSAGE,
 						    new ImageIcon("src/images/icon.jpg"));
 				}else{
-					JOptionPane.showMessageDialog(null, "Empate!! " + score1 + ": " + score2,
+					JOptionPane.showMessageDialog(null, "Empate!! " + score1 + " : " + score2,
 						    "Time is up!",
 						    JOptionPane.INFORMATION_MESSAGE,
 						    new ImageIcon("src/images/icon.jpg"));
@@ -201,6 +200,14 @@ public class Juego {
 				break;
 			}
 		}
+	}
+
+	/*
+	 * Método que genera valores enteros aleatorios entre 1 y 5
+	 */
+	public int movimientoIA(){
+		Random aleatorio = new Random();
+		return aleatorio.nextInt(6);
 	}
 
 	/*

@@ -34,7 +34,7 @@ public class Principal {
 		Juego jugar = new Juego(); 
 		jugar.setNombre(1, nombre1);
 		jugar.setNombre(2, nombre2);
-		jugar.cargarJuego();
+		jugar.cargarJuego(1);
 	}
 	
 	/*
@@ -45,6 +45,6 @@ public class Principal {
 		Juego jugar = new Juego(); 
 		jugar.setNombre(1, nombre1);
 		jugar.setNombre(3, "IA");
-		jugar.cargarJuego();
+		jugar.cargarJuego(2);
 	}
 }
