@@ -38,13 +38,14 @@ public class Principal {
 	}
 	
 	/*
-	 * Modo de juego Jugador vs Máquina
+	 * Modo de juego Jugador vs IA
 	 */
 	public static void IA(){
 		String nombre1 = JOptionPane.showInputDialog(null, "Nombre del Jugador"); 
+		
 		Juego jugar = new Juego(); 
 		jugar.setNombre(1, nombre1);
-		jugar.setNombre(3, "IA");
+		jugar.setNombre(2, "IA");
 		jugar.cargarJuego(2);
 	}
 }

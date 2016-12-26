@@ -4,15 +4,13 @@
  */
 public class Jugador {
 
-	private int jugador;
 	private String imagen;
 	private int x;
 	private int y;
 	private int score;
 	
-	public Jugador(int jugador, String imagen, int x, int y, int score) {
+	public Jugador(String imagen, int x, int y, int score) {
 		
-		this.jugador = jugador;
 		this.imagen = imagen;
 		this.x = x;
 		this.y = y;
@@ -67,22 +65,6 @@ public class Jugador {
 		setImagen(imagen);
 		x += 10;
 	}
-	/*
-	 * Método que muestra al jugador cuando le alcanza
-	 * un cohete
-	 */
-	public void destruido(){
-		imagen = " ";
-		setImagen(imagen);
-	}
-
-	public int getJugador() {
-		return jugador;
-	}
-
-	public void setJugador(int jugador) {
-		this.jugador = jugador;
-	}
 
 	public String getImagen() {
 		return imagen;
@@ -92,22 +74,6 @@ public class Jugador {
 		this.imagen = imagen;
 	}
 
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
 	public int getScore() {
 		return score;
 	}
@@ -115,5 +81,5 @@ public class Jugador {
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 }

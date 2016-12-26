@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 public class Juego {
 
 	// Declaramos las variables
+	private Jugador player1 = null;
+	private Jugador player2 = null;
 	private String nombre1 = "", nombre2 = "";
 	private int player1X = 200, player1Y = 300; // Coordenadas iniciales jugador1
 	private int player2X = 200, player2Y = 200; // Coordenadas iniciales jugador2	
@@ -30,7 +32,6 @@ public class Juego {
 	private boolean lanzado2 = false; //Estado del cohete 2
 	private int movimiento;
 
-	
 	/**
 	 * Método que carga el juego
 	 * @param tipo 1 si jugador vs jugador, 2 si jugador vs IA
@@ -51,8 +52,8 @@ public class Juego {
 		StdDraw.enableDoubleBuffering();
 
 		//Cargamos los jugadores
-		Jugador player1 = new Jugador(1 ,"images/player1/user1-right.png", 200, 300, 0);
-		Jugador player2 = new Jugador(2 ,"images/player2/user2-right.png", 200, 200, 0);
+		player1 = new Jugador("images/player1/user1-right.png", 200, 300, 0);
+		player2 = new Jugador("images/player2/user2-right.png", 200, 200, 0);
 		
 		// Movimiento de los usuarios
 		while (true) {
@@ -173,7 +174,7 @@ public class Juego {
 			player2.mostrar(player2X, player2Y); //Mostramos el jugador 2
 			StdDraw.picture(rocket1X, rocket1Y, rocketImage1);
 			StdDraw.picture(rocket2X, rocket2Y, rocketImage2);
-			StdDraw.text(ancho/2, alto - 20, nombre1 + "   " + score1  +"    "+ score2 + "   " + nombre2);
+			StdDraw.text(ancho/2, alto - 20, nombre1 + "   " + player1.getScore()  +"    "+ player2.getScore() + "   " + nombre2);
 			StdDraw.text(ancho/2 - 4, alto - 40, "TIME: " + time);
 			StdDraw.show();
 			StdDraw.pause(20);
@@ -182,17 +183,17 @@ public class Juego {
 			// Revisar si el tiempo se acaba
 			if (time < 0) {
 				if(score1 > score2){
-					JOptionPane.showMessageDialog(null, nombre1 + " won so ez.  " + score1 + " : " + score2,
+					JOptionPane.showMessageDialog(null, nombre1 + " won so ez.  " + player1.getScore() + " : " + player2.getScore(),
 							 "Time is up!",
 						    JOptionPane.INFORMATION_MESSAGE,
 						    new ImageIcon("src/images/icon.jpg"));
 				}else if(score1 < score2){
-					JOptionPane.showMessageDialog(null, nombre2 + " won so ez.  " + score1 + " : " + score2,
+					JOptionPane.showMessageDialog(null, nombre2 + " won so ez.  " + player1.getScore() + " : " + player2.getScore(),
 							 "Time is up!",
 						    JOptionPane.INFORMATION_MESSAGE,
 						    new ImageIcon("src/images/icon.jpg"));
 				}else{
-					JOptionPane.showMessageDialog(null, "Empate!! " + score1 + " : " + score2,
+					JOptionPane.showMessageDialog(null, "Empate!! " + player1.getScore() + " : " + player2.getScore(),
 						    "Time is up!",
 						    JOptionPane.INFORMATION_MESSAGE,
 						    new ImageIcon("src/images/icon.jpg"));
@@ -223,6 +224,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado2 = false;
 			score2 += 1;
+			player2.setScore(score2);
 			reset();
 		}
 		else if (player1X  == rocket2X + 20 && (rocket2Y <= player1Y + 12 && rocket2Y >= player1Y - 12)){
@@ -231,6 +233,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado2 = false;
 			score2 += 1;
+			player2.setScore(score2);
 			reset();
 		}else if (player1Y == rocket2Y + 20 && (rocket2X <= player1X + 12 && rocket2X >= player1X - 12)){
 			user1Image = "images/explosion.png";
@@ -238,6 +241,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado2 = false;
 			score2 += 1;
+			player2.setScore(score2);
 			reset();
 		}else if (player1Y == rocket2Y - 20 && (rocket2X <= player1X + 12 && rocket2X >= player1X - 12)){
 			user1Image = "images/explosion.png";
@@ -245,6 +249,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado2 = false;
 			score2 += 1;
+			player2.setScore(score2);
 			reset();
 		}
 		
@@ -262,6 +267,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado1 = false;
 			score1 += 1;
+			player1.setScore(score1);
 			reset();
 		}
 		else if (player2X  == rocket1X + 20 && (rocket1Y <= player2Y + 12 && rocket1Y >= player2Y - 12)){
@@ -270,6 +276,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado1 = false;
 			score1 += 1;
+			player1.setScore(score1);
 			reset();
 		}else if (player2Y == rocket1Y + 20 && (rocket1X <= player2X + 12 && rocket1X >= player2X - 12)){
 			user2Image = "images/explosion.png";
@@ -277,6 +284,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado1 = false;
 			score1 += 1;
+			player1.setScore(score1);
 			reset();
 		}else if (player1Y == rocket1Y - 20 && (rocket1X <= player2X + 12 && rocket1X >= player2X - 12)){
 			user2Image = "images/explosion.png";
@@ -284,6 +292,7 @@ public class Juego {
 			StdDraw.show();
 			lanzado1 = false;
 			score1 += 1;
+			player1.setScore(score1);
 			reset();
 		}
 		
@@ -492,15 +501,13 @@ public class Juego {
 
 	/**
 	 * Método que setea los nombres de los jugadores
-	 * @param jugador 1 para nombre del jugador1, 2 para el jugador 2 y 3 para IA
+	 * @param jugador 1 para nombre del jugador1, 2 para el jugador 2
 	 * @param nombre del jugador
 	 */
 	public void setNombre(int jugador, String nombre){
 		if(jugador == 1){
 			this.nombre1 = nombre;
 		}else if(jugador == 2){
-			this.nombre2 = nombre;
-		}else if(jugador == 3){
 			this.nombre2 = nombre;
 		}
 	}
